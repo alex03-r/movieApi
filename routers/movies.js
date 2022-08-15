@@ -25,7 +25,7 @@ moviesRouter.get('/', async (req, res) => {
 
     res.json({
         ok: true,
-        moviest: allMovies
+        movies: allMovies
     })
 
 })
@@ -86,9 +86,12 @@ moviesRouter.put('/update/:id', (req, res) => {
     if(req.params.id.length > 0 && req.body !== null ){
 
         let id = req.params.id;    
-        let body = req.body;       
+        let body = req.body;   
         
-
+        movies.findByIdAndUpdate(id, body, { new:false} )
+        .then(() => console.log('movie update'))
+        .catch(() => console.log('sorry the movie was not updated'))
+        
         res.json({
             ok:true,
             msg:'movie updated',
