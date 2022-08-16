@@ -2,7 +2,7 @@ const express = require('express');
 
 const app = express();
 
-const connectCluster = require('./configuration/moviesW')
+const connectCluster = require('./configuration/dbConection')
 
 connectCluster();
 

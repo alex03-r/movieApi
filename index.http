@@ -1,9 +1,11 @@
-GET http://localhost:4000/api/movies
+# GET http://localhost:4000/api/movies
 
+# GET http://localhost:4000/api/movies/62faca5ed33ff9933c99d5f9
 
 # GET http://localhost:4000/api/movies/category/action
 
 # POST http://localhost:4000/api/movies
+
 # Content-Type: application/json
 
 # {
@@ -13,7 +15,6 @@ GET http://localhost:4000/api/movies
 #  "describtion":"this movie is about a person call jennifer aniston",
 #  "new":true
 # }
-
 
 # PUT http://localhost:4000/api/movies/update/62faca5ed33ff9933c99d5f9
 # Content-Type: application/json
@@ -26,4 +27,4 @@ GET http://localhost:4000/api/movies
 #  "new":true
 # }
 
- #DELETE http://localhost:4000/api/movies/delete/62facd8b7e7ce52615f49c29
+ DELETE http://localhost:4000/api/movies/delete/

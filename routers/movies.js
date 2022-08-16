@@ -1,14 +1,9 @@
 const express = require('express');
 
 const app = express();
+//the schema
+const movies = require('../models/movieSchema');
 
-const movies = require('../configuration/confidatabase')
-
-//  const  connectCluster = require('../configuration/moviesW');
-
-//  connectCluster()
-
-// const movies = require('../configuration/moviesW');
 //creating a router
 const moviesRouter = express.Router();
 
@@ -17,6 +12,8 @@ app.use('/api/movies', moviesRouter);
 
 //aplying other midelware to get the data by json
 moviesRouter.use(express.json());
+
+// ----------------------------------------------------------------------
 
 //get all movies
 moviesRouter.get('/', async (req, res) => {
@@ -30,24 +27,41 @@ moviesRouter.get('/', async (req, res) => {
 
 })
 
+// ---------------------------------------------------------------------
 
-//get movie by category
-moviesRouter.get('/category/:name', (req, res) => {
+//get movies by category
+moviesRouter.get('/category/:name', async (req, res) => {
 
-    let categoryName = req.params.name
-    let allMovies = movies.findOne({ categoty: categoryName })
-    // let movieCategory = movies.filter(movie => movie.category == categoryName);
+    let categoryName = req.params.name;
 
-    console.log(allMovies)
-    // res.json({
-    //     ok:true,
-    //     categoryMovie:movieCategory
-    // })
+    let allMovies = await movies.find();
 
+    let categorizedMovies = allMovies.filter(category => category.category == categoryName );
+ 
+    res.json({
+        ok:true,
+        movies: categorizedMovies
+    })
+})
+
+// ---------------------------------------------------------------------
+
+//get movie one movie by id
+moviesRouter.get('/:id', async (req, res) => {
+
+    let id = req.params.id;
+    let movieRetrived = await movies.findById(id);
+
+    res.json({
+        ok:true,
+        movie: movieRetrived
+    })
 
 })
 
-//add a movies
+// --------------------------------------------------------------------
+
+//add a movie
 moviesRouter.post('/', (req, res) => {
 
     let body = req.body;
@@ -63,27 +77,10 @@ moviesRouter.post('/', (req, res) => {
 
 })
 
-// //delete a movie
-moviesRouter.delete('/delete/:id', (req, res) =>{
-
-    let id = req.params.id;
-
-    movies.findByIdAndDelete(id)
-    .then(() => console.log('delted successfuly'))
-
-    res.json({
-
-        ok:true,
-        msg:'delted successfuly',
-    
-    })
-
-})
+// --------------------------------------------------------------------
 
 // //update a movie
 moviesRouter.put('/update/:id', (req, res) => {
-
-    if(req.params.id.length > 0 && req.body !== null ){
 
         let id = req.params.id;    
         let body = req.body;   
@@ -94,11 +91,28 @@ moviesRouter.put('/update/:id', (req, res) => {
         
         res.json({
             ok:true,
-            msg:'movie updated',
-          
+            msg:'movie updated'          
         })
-    }
-    console.log('no data');    
+   
+})
+
+// --------------------------------------------------------------------
+
+// //delete a movie
+moviesRouter.delete('/delete/:id', (req, res) =>{
+
+    let id = req.params.id;
+
+        movies.findByIdAndDelete(id)
+        .then(() => console.log('delted successfuly'))
+        .catch(() => console.log('sorry it was not deleted'))
+    
+       res.json({
+            ok:true,
+            msg:'delted successfuly'    
+        })
+ 
+
 })
 
 
